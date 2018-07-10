@@ -6,13 +6,15 @@ import albumData from './../data/albums';
 class Library extends Component {
     constructor(props) {
         super(props);
-        this.state = {albums: albumData};
+        this.state = {
+          albums: albumData
+        };
     }
     render() {
         return(
             <section className="library">
                 {
-                  this.state.albums.map( (album,index) => 
+                  this.state.albums.map( (album,index) =>
                   <Link to={`/album/${album.slug}`} key={index}>
                         <img src={album.albumCover} alt={album.title}/>
                         <div>{album.title}</div>
