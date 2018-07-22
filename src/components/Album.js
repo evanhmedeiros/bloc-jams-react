@@ -3,6 +3,7 @@ import albumData from './../data/albums';
 
 
 
+
 class Album extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,8 @@ class Album extends Component {
     this.state = { //setting the current song to 1st on album and isPlaying to false
       album: album,
       currentSong: album.songs[0],
-      isPlaying: false
+      isPlaying: false,
+      currentlyHovered: false
     };
 
     this.audioElement = document.createElement('audio');//the actual audio element
@@ -48,6 +50,28 @@ class Album extends Component {
         this.play();
       }
     }
+   
+    songHover(index) {
+      this.setState({ isHovered: index });
+    }
+
+    songUnHover(index) {
+      this.setState({ isHovered: false });
+    }
+
+    buttonHover(song,index) {
+      if (this.state.isPlaying === true && this.state.currentSong === song) {
+        return <span className="icon ion-md-pause"></span>
+      }
+      else if (this.state.isPlaying === false && this.state.currentSong === song) {
+        return <span className="icon ion-md-play"></span>
+      }
+      else if (this.state.currentlyHovered === index) {
+        return <span className="icon ion-md-play"></span>
+      }
+      else 
+        return <span>{index + 1}</span>
+    }
 
   render() {
     return(
@@ -68,8 +92,10 @@ class Album extends Component {
            </colgroup>  
           <tbody>
           {this.state.album.songs.map( (song, index) =>
-            <tr className="song" key={index} onClick={() => this.handleSongClick(song)} >  
-                    <td>{index+1}</td>
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song)} 
+            onMouseEnter={() => this.songHover(index)} 
+            onMouseLeave={() => this.songUnHover(index)}>  
+                    <td>{this.buttonHover(song, index+1)}</td>
                     <td>{song.title}</td>
                     <td>{song.duration}</td>
                 
@@ -80,7 +106,7 @@ class Album extends Component {
       </section>
     );
   }
-}
+} 
 
         
 export default Album; 
