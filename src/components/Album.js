@@ -11,18 +11,44 @@ class Album extends Component {
       return album.slug === this.props.match.params.slug
     });
 
-    const songs = albumData.find( songs => {
-      return songs.slug === this.props.match.params.slug
-    });
+    // const songs = albumData.find( songs => {
+    //   return songs.slug === this.props.match.params.slug
+    // });
 
-    this.state = {
-      album: album
+    this.state = { //setting the current song to 1st on album and isPlaying to false
+      album: album,
+      currentSong: album.songs[0],
+      isPlaying: false
     };
 
-    this.state = {
-      album: songs
-    };
-   
+    this.audioElement = document.createElement('audio');//the actual audio element
+    this.audioElement.src = album.songs[0].audioSrc;// audioSrc prop set to 1st song on album
+
+    play() {
+      this.audioElement.play();
+      this.setState({ isPlaying: true });
+    }
+
+    pause() {
+      this.audioElement.pause();
+      this.setState({ isPlaying: false });
+    } 
+
+    setSong(song) {
+      this.audioElement.src = song.audioSrc;
+      this.setState({ currentSong: song });
+    }
+
+    handleSongClick(song) {
+      const isSameSong = this.state.currentSong === song;
+      if (this.state.isPlaying && isSameSong) {
+        this.pause();
+      } else {
+        if (!isSameSong) { this.setSong(song); }
+        this.play();
+      }
+    }
+ 
 
   }
 
@@ -46,7 +72,7 @@ class Album extends Component {
           <tbody>
           {
             this.state.album.songs.map( (song, index) =>
-             <tr key={index}>   
+            <tr className="song" key={index} onClick={() => this.handleSongClick(song)} >  
                     <td>{index+1}</td>
                     <td>{song.title}</td>
                     <td>{song.duration}</td>
@@ -60,5 +86,5 @@ class Album extends Component {
     );
   }
 }
-
-export default Album;
+        
+export default Album; 
