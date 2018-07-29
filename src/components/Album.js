@@ -59,6 +59,14 @@ class Album extends Component {
       this.play();
     }
 
+    handleNextClick() {
+      const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+      const newIndex = Math.min(this.state.album.songs.length - 1, currentIndex + 1);
+      const newSong  = this.state.album.songs[newIndex];
+      this.setSong(newSong);
+      this.play();
+    } 
+
 
    songHover(index) {
         this.setState({ isHovered: index });
@@ -74,7 +82,7 @@ class Album extends Component {
         }
         else if (this.state.isPlaying === false && this.state.currentSong === song) {
           return <span className="icon ion-md-play"></span>
-        }
+        }   
         else if (this.state.currentlyHovered === index) {
           return <span className="icon ion-md-play"></span>
         }
@@ -117,6 +125,7 @@ class Album extends Component {
           currentSong={this.state.currentSong}
           handleSongClick={() => this.handleSongClick(this.state.currentSong)}
           handlePrevClick={() => this.handlePrevClick()}
+          handleNextClick={() => this.handleNextClick()}
         />
       </section>
     );
