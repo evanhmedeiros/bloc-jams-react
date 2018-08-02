@@ -106,14 +106,20 @@ class Album extends Component {
 
     handleVolumeChange(e) {
       const newVolume = e.target.value;
-      this.audioElement.currentVolume = newVolume;
-      this.setState({ currentVolume: newVolume});
+      this.audioElement.volume = newVolume;
+      this.setState({ volume: newVolume});
     }
 
     formatTime(time) {
       const minutes = Math.floor( time / 60 );
-      const seconds = Math.floor( time % 60 );
-      return ( minutes + ':' + seconds || '-:--' ); //It should accept a time in seconds as 
+      const seconds = ("0" + Math.floor(time % 60)).slice(-2);
+      if (isNaN(time))
+        {
+          return "-:--"
+        } else {
+          return (minutes + ":" + seconds);
+        }
+      //It should accept a time in seconds as 
       // a parameter and convert it into a string with the format of M:SS
       // If formatTime is passed an invalid/non-numeric value, it should return a fallback value of "-:--")
       // I don't think this will work, I think we need an if else statement... if NaN, '-:--' else, time.
@@ -166,7 +172,7 @@ class Album extends Component {
                         onMouseLeave={() => this.songUnHover(index)}>  
                     <td>{this.buttonHover(song, index)}</td>
                     <td>{song.title}</td>
-                    <td>{song.duration}</td>
+                    <td>{this.formatTime(song.duration)}</td>
                 
             </tr>
             )}
@@ -183,6 +189,7 @@ class Album extends Component {
           handleNextClick={() => this.handleNextClick()}
           handleTimeChange={(e) => this.handleTimeChange(e)}
           handleVolumeChange={(e) => this.handleVolumeChange(e)}
+          formatTime={this.formatTime}
         />
       </section>
     );
