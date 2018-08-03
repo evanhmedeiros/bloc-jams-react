@@ -40,7 +40,7 @@ class PlayerBar extends Component {
                         onChange={this.props.handleVolumeChange}
                         />
                         
-                    <div className="icon ion-volume-high">{this.props.volume}</div>
+                        {/*<div className="icon ion-volume-high">{this.props.volume}</div>*/}
                 </section>
             </section>
         );
